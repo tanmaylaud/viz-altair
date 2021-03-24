@@ -25,6 +25,6 @@ if assignment == "Flu Net":
     st.altair_chart(get_map())
 
 if assignment == "Student Scores":
-    st.write("# Studnet Scores")
+    st.write("# Student Scores")
     st.altair_chart(get_scatter())
     st.altair_chart(get_scatter_with_brush())

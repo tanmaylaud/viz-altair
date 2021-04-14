@@ -37,6 +37,10 @@ def get_line_chart(multi=False):
         value_name="flu_cases",
     )
     transformed_df["index"] = transformed_df["week"] % 53
+    slider1 = alt.binding_range(min=1, max=52, step=1)
+    slider2 = alt.binding_range(min=1, max=52, step=1)
+    select_week1 = alt.selection_single(name="week1", fields=["week"], bind=slider1)
+    select_week2 = alt.selection_single(name="week2", fields=["week"], bind=slider2)
     if multi:
         multi_select = alt.selection_multi(fields=["country"])
         selection = alt.selection_multi(fields=["country"])
@@ -54,8 +58,14 @@ def get_line_chart(multi=False):
         bind=alt.binding_select(options=countries),
         name="Select",
     )
+
     line, _ = plot(selector, transformed_df)
-    return line
+    return (
+        line.add_selection(select_week2)
+        .add_selection(select_week1)
+        .transform_filter("datum.week > week1_week")
+        .transform_filter("datum.week < week2_week")
+    )
 
 
 def get_map():
